@@ -209,20 +209,22 @@ function MainChat(props) {
       <div className="bg-white text-black p-4 rounded-[10px] w-[35%] md:min-w-[35%]  relative">
         {/* Icons to switch view */}
         <div className="flex gap-2 w-full justify-end text-gray-300">
-          <FaChartPie
-            title="show pie chart"
-            onClick={() => handleViewChange(message.id, "pie")}
-            className={`cursor-pointer ${
-              message.view === "pie" ? "text-blue-600" : ""
-            } hover:text-gray-500`}
-          />
-          <FaChartBar
-            title="show bar chart"
-            onClick={() => handleViewChange(message.id, "bar")}
-            className={`cursor-pointer ${
-              message.view === "bar" ? "text-blue-600" : ""
-            } hover:text-gray-500`}
-          />
+        
+            <FaChartPie
+              title="show pie chart"
+              onClick={() => handleViewChange(message.id, "pie")}
+              className={`cursor-pointer ${
+                message.view === "pie" ? "text-blue-600" : ""
+              } hover:text-gray-500 ${response.table && 'hidden'}`}
+            />
+            <FaChartBar
+              title="show bar chart"
+              onClick={() => handleViewChange(message.id, "bar")}
+              className={`cursor-pointer ${
+                message.view === "bar" ? "text-blue-600" : ""
+              } hover:text-gray-500 ${response.table && 'hidden'}`}
+            />
+            
           <FaTable
             title="show table"
             onClick={() => handleViewChange(message.id, "table")}
