@@ -239,7 +239,7 @@ function MainChat(props) {
           <BarChart data={chartData.data} labels={chartData.columns} />
         ) : (
           message.view === "table" && (
-            <TableChart data={chartData} view={view} />
+            <TableChart data={chartData} view={response.table} />
           )
         )}
 

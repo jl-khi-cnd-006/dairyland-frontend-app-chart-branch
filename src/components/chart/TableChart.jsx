@@ -22,7 +22,7 @@ const TableChart = ({ data, view }) => {
 
   let tableData = [];
 
-  if (data && view === 'table') {
+  if (data && view) {
     tableData = convertTableData(data);
   } else {
     tableData = convertTableData({
@@ -40,7 +40,7 @@ const TableChart = ({ data, view }) => {
   }
 
   return (
-    <div className={view === 'table' ? " text-gray-900 p-4 rounded-lg min-w-[50%] h-[30vh]  overflow-hidden" : ' max-w-[100%] mt-4 h-full overflow-auto'}>
+    <div className={view ? " text-gray-900 p-4 rounded-lg min-w-[50%] h-[30vh]  overflow-hidden" : ' max-w-[100%] mt-4 h-full overflow-auto'}>
       <div className="overflow-auto max-h-[40vh] ">
         <table className="min-w-full divide-y divide-gray-300 border border-gray-300 bg-red-400 ">
           <thead className="bg-gray-700 text-white rounded-lg">
