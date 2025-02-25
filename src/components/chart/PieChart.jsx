@@ -1,13 +1,54 @@
 import React, { useState } from "react";
-import dynamic from 'next/dynamic';
-
-const ReactApexChart = dynamic(() => import('react-apexcharts'), { ssr: false });
+import ReactApexChart from "react-apexcharts";
 
 const PieChart = ({ data, labels }) => {
-  console.log('data in pir chart',data, labels)
-  const integerData = data.map((value) => Math.floor(parseFloat(value)));
+  // Define state using useState
+  const [chartState, setChartState] = useState({
+    series: [
+      {
+        data,
+      },
+    ],
+    options: {
+      chart: {
+        height: 350,
+        type: "bar",
+      },
+      colors: [],
+      plotOptions: {
+        bar: {
+          columnWidth: "30%",
+          distributed: true,
+        },
+      },
+      dataLabels: {
+        enabled: true,
+      },
+      legend: {
+        show: false,
+      },
+      xaxis: {
+        categories: labels,
+        labels: {
+          style: {
+            colors: [],
+            fontSize: "12px",
+            fontWeight: 600,
+          },
+        },
+        title: {
+          text: "Vendors",
+        },
+      },
+      yaxis: {
+        title: {
+          text: "Servings",
+        },
+      },
+    },
+  });
   const [pieChartState, setPieChartState] = useState({
-    series: integerData,
+    series: [244, 155],
     options: {
       chart: {
         width: 380,
