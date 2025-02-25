@@ -174,14 +174,14 @@ function MainChat(props) {
       let updatedTable = [];
       // if (props.chatType === 'chatgene' && typeof response !== "object" ) {
       //   return (
-      //     <div className="rtl bg-gray-200 text-white p-4 rounded-[10px] w-fit max-w-[100%] md:max-w-[50%]">
+      //     <div className="rtl bg-indigo-200 text-white p-4 rounded-[10px] w-fit max-w-[100%] md:max-w-[50%]">
       //       {(isStreaming && id === streamingMessageId) ? <StreamingResponse response={response} /> : <p>{response}</p>}
       //     </div>
       //   );
       // }
       if (response.table && Object.keys(response.table).length === 0) {
         return (
-          <div className="bg-gray-200 p-3 rounded-[10px] w-fit max-w-[50%]">
+          <div className="bg-indigo-200 p-3 rounded-[10px] w-fit max-w-[50%]">
             <p className="font-medium text-white ps-3">
               No relevant data was returned. Please refine your request.
             </p>
@@ -194,7 +194,7 @@ function MainChat(props) {
           updatedTable = response.table;
         }
         return (
-          <div className="bg-gray-200 text-gray-900 p-4 rounded-lg w-full max-w-[100%] md:max-w-[50%] h-[50%] overflow-hidden">
+          <div className="bg-indigo-200 text-gray-900 p-4 rounded-lg w-full max-w-[100%] md:max-w-[50%] h-[50%] overflow-hidden">
             <div className="overflow-auto max-h-[40vh] rounded-lg table-container">
               <table className="min-w-full divide-y divide-gray-300 border  border-gray-300">
                 <thead className="bg-gray-700 text-white">
@@ -237,7 +237,7 @@ function MainChat(props) {
         );
       } else if (response.image) {
         return (
-          <div className="bg-gray-200 text-white p-4 rounded-[10px] w-fit max-w-[100%] md:max-w-[50%] relative group">
+          <div className="bg-indigo-200 text-white p-4 rounded-[10px] w-fit max-w-[100%] md:max-w-[50%] relative group">
             <Image
               src={`data:image/png;base64,${response.image}`}
               alt="Generated Image"
@@ -259,7 +259,7 @@ function MainChat(props) {
         );
       } else if (response.llm2_response) {
         return (
-          <div className="bg-gray-200 text-white p-4 rounded-[10px] w-fit max-w-[100%] md:max-w-[50%]">
+          <div className="bg-indigo-200 text-white p-4 rounded-[10px] w-fit max-w-[100%] md:max-w-[50%]">
             <p>{String(response.llm2_response)}</p>
             <p className="font-medium font-bold text-black-300 ps-3">
               <Markdown
@@ -294,7 +294,7 @@ function MainChat(props) {
         );
       } else {
         return (
-          <div className="bg-gray-200 p-3 rounded-[10px] w-fit max-w-[50%]">
+          <div className="bg-indigo-200 p-3 rounded-[10px] w-fit max-w-[50%]">
             {response === "" ? (
               <p className="font-medium font-bold text-black-300 ps-3">
                 No results found for your request.{" "}
@@ -338,7 +338,7 @@ function MainChat(props) {
                 </div>
                 <div className="flex justify-end m-2">
                   {message.response === null ? (
-                    <div className="bg-gray-200 p-3 rounded-[10px] w-fit max-w-[100%] md:max-w-[50%]">
+                    <div className="bg-indigo-200 p-3 rounded-[10px] w-fit max-w-[100%] md:max-w-[50%]">
                       <BeatLoader
                         size={10}
                         color="#000000"
@@ -404,7 +404,7 @@ function MainChat(props) {
             type="submit"
             ref={btnRef}
             disabled={loading}
-            className={`bg-gray-200 p-3 md:p-4 rounded-[7px] ${
+            className={`bg-indigo-200 p-3 md:p-4 rounded-[7px] ${
               loading ? "opacity-50 cursor-not-allowed" : ""
             }`}
           >
