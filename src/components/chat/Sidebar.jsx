@@ -2,6 +2,7 @@
 import Image from "next/image";
 import React, { useEffect, useRef, useState } from "react";
 import { FaBars } from "react-icons/fa6";
+import { useRouter } from "next/navigation";
 
 // const freqData = [
 //   // {
@@ -77,6 +78,7 @@ const freqData = [
 function SideBar({ handleFrqClick }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const sidebarRef = useRef(null);
+  const router = useRouter();
 
   useEffect(() => {
     const handleClickOutside = (event) => {

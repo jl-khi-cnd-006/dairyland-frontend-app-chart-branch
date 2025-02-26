@@ -71,13 +71,13 @@ const FAQ = () => {
 
         <div className="min-h-[80vh] w-[83%] mx-auto py-[10%] flex flex-col items-center gap-[30px] bg-no-repeat bg-cover relative">
             <div className="w-full flex flex-col items-center">
-                <Image src="/images/banner-hand-2.png" alt='banner' width={500} height={500} className='absolute z-10 right-[-10%] md:right-[2.5%] top-[4.05%] md:top-[17.5%] w-[20%] md:w-[15%]' />
+                <Image src="/assets/images/banner-hand-2.png" alt='banner' width={500} height={500} className='absolute z-10 right-[-10%] md:right-[2.5%] top-[4.05%] md:top-[17.5%] w-[20%] md:w-[15%]' />
                 <div className="relative border min-h-[43vh] h-auto max-w-[95%] md:max-w-[76%] rounded-xl bg-black-200 opacity-[100%]">
-                    <Image src="/images/banner.png" alt='banner' width={500} height={500} className='absolute z-40 w-full h-full' />
+                    <Image src="/assets/images/banner.png" alt='banner' width={500} height={500} className='absolute z-40 w-full h-full' />
                     <div className="w-full text-white py-7 flex flex-col items-center">
                         <div className="relative w-[90%] flex flex-col items-center">
                             <h1 className='text-center font-[700] text-[25px] md:text-[45px]'>Ready to move <span className="mx-[10px] text-indigo-200">Ahead?</span></h1>
-                            <Image src="/images/banner-arrow.png" alt='banner-arrow' width={500} height={500} className='w-[10%] h-[10%] m-4' />
+                            <Image src="/assets/images/banner-arrow.png" alt='banner-arrow' width={500} height={500} className='w-[10%] h-[10%] m-4' />
                             <p className="text-[14px] md:text-[18px] text-center">
                                 With the help of our ground-breaking AI tool, unlock the potential of cutting-edge AI technology and increase your productivity to new heights. Embrace the future today and let our AI tool redefine what&apos;s possible for you.
                             </p>
@@ -90,7 +90,7 @@ const FAQ = () => {
                         </div>
                     </div>
                 </div>
-                <Image src="/images/banner-hand-1.png" alt='banner-band' width={500} height={500} className='absolute left-[-10.3%] md:left-[2.4%] bottom-[29.2%] md:bottom-[17.5%] w-[20%] md:w-[15%] z-20' />
+                <Image src="/assets/images/banner-hand-1.png" alt='banner-band' width={500} height={500} className='absolute left-[-10.3%] md:left-[2.4%] bottom-[29.2%] md:bottom-[17.5%] w-[20%] md:w-[15%] z-20' />
             </div>
         </div>
     </section>

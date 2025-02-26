@@ -45,3 +45,23 @@
 .table-container::-webkit-scrollbar-track {
   background: #000000;
 }
+
+.nav-scroll {
+  animation: scroll-transition;
+  animation-timeline: scroll(y);
+}
+
+@keyframes scroll-transition {
+  2% {
+    background-color: #0a101aa0;
+  
+    box-shadow: 0px 4px 8px #289a6b1d;; /* No shadow at the start */
+  }
+  
+  100% {
+    background-color: #0B1625;
+  
+    box-shadow: 0px 4px 8px #6c727080; /* Add a valid box-shadow */
+  }
+}
+

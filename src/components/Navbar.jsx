@@ -82,7 +82,7 @@ function Navbar() {
   }, [isMenuOpen]);
 
   return (
-    <header className='fixed bg-transparent py-4 px-6 md:px-12 lg:px-24 flex flex-col md:flex-row justify-between w-full items-center z-50'>
+    <header className='nav-scroll fixed bg-transparent py-4 px-6 md:px-12 lg:px-24 flex flex-col md:flex-row justify-between w-full items-center z-50'>
       <div className='flex items-center w-full justify-between'>
         <Image src={Logo} width={120} height={120} alt="Logo" />
         <button
@@ -91,7 +91,7 @@ function Navbar() {
         >
           ☰
         </button>
-        <nav className={`fixed top-0 right-0 w-full bg-black-600 md:bg-transparent md:flex md:relative md:top-auto md:right-auto md:w-auto transition-transform transform ${isMenuOpen ? 'translate-x-0 h-screen' : 'translate-x-full'} md:translate-x-0`}>
+        <nav className={`fixed top-0 right-0 w-full md:bg-transparent md:flex md:relative md:top-auto md:right-auto md:w-auto transition-transform transform ${isMenuOpen ? 'translate-x-0 h-screen' : 'translate-x-full'} md:translate-x-0`}>
           <div className='md:hidden flex justify-end p-4'>
             <button
               className='text-white text-2xl'
