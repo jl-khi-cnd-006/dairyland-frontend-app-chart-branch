@@ -4,7 +4,7 @@ import dynamic from 'next/dynamic';
 const ReactApexChart = dynamic(() => import('react-apexcharts'), { ssr: false });
 
 const PieChart = ({ data, labels }) => {
-  console.log('data in pir chart',data, labels)
+  // console.log('data in pir chart',data, labels)
   const integerData = data.map((value) => Math.floor(parseFloat(value)));
   const [pieChartState, setPieChartState] = useState({
     series: integerData,

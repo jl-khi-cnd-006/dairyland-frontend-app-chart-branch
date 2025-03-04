@@ -85,7 +85,7 @@ function MainChat(props) {
 
     const response = await fetchBackendResponse(userMessage);
 
-    console.log("response after fetching", response);
+    // console.log("response after fetching", response);
     setViewDynamically(response);
 
     setMessageList((prevMessages) =>
@@ -130,7 +130,7 @@ function MainChat(props) {
       if (!response.ok) {
         throw new Error(data?.detail?.message || "Network response was not ok");
       }
-      console.log("data", data);
+      // console.log("data", data);
       return data;
     } catch (error) {
       toast.error(error.message || "Something went wrong", {
@@ -198,50 +198,18 @@ function MainChat(props) {
       );
     }
 
-    let chartData;
-
-    if (response.pie || response.bar || response.table) {
-      chartData = response.pie || response.bar || response.table;
-      // console.log(chartData)
-    }
 
     return (
-      <div className="bg-white text-black p-4 rounded-[10px] w-[35%] md:min-w-[35%]  relative">
-        {/* Icons to switch view */}
-        <div className="flex gap-2 w-full justify-end text-gray-300">
-        
-            <FaChartPie
-              title="show pie chart"
-              onClick={() => handleViewChange(message.id, "pie")}
-              className={`cursor-pointer ${
-                message.view === "pie" ? "text-blue-600" : ""
-              } hover:text-gray-500 ${response.table && 'hidden'}`}
-            />
-            <FaChartBar
-              title="show bar chart"
-              onClick={() => handleViewChange(message.id, "bar")}
-              className={`cursor-pointer ${
-                message.view === "bar" ? "text-blue-600" : ""
-              } hover:text-gray-500 ${response.table && 'hidden'}`}
-            />
-            
-          <FaTable
-            title="show table"
-            onClick={() => handleViewChange(message.id, "table")}
-            className={`cursor-pointer ${
-              message.view === "table" ? "text-blue-600" : ""
-            } hover:text-gray-500`}
-          />
-        </div>
+      <div className="bg-white text-black rounded-[10px] md:w-[50%] w-[80%]  relative">
 
         {/* Render the selected chart */}
         {message.view === "pie" ? (
-          <PieChart data={chartData.data} labels={chartData.columns} />
+          <PieChart data={response.pie.data} labels={response.pie.columns} />
         ) : message.view === "bar" ? (
-          <BarChart data={chartData.data} labels={chartData.columns} />
+          <BarChart response={response.bar} />
         ) : (
           message.view === "table" && (
-            <TableChart data={chartData} view={response.table} />
+            <TableChart data={response.table} view={response.table} />
           )
         )}
 

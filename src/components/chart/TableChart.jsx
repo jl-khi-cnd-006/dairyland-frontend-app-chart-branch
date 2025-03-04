@@ -60,6 +60,7 @@ const TableChart = ({ data, view }) => {
             {tableData.map((item, index) => (
               <tr key={index}>
                 {Object.keys(item).map((column, colIndex) => (
+                  
                   <td
                     key={colIndex}
                     className="px-4 py-2 whitespace-nowrap text-sm text-white border-e border-b border-gray-300"
