@@ -51,8 +51,6 @@ const BarChart = ({ response }) => {
 
     const { columns, data } = response;
 
-    // if (!columns || !data || !Array.isArray(data)) return;
-
     let categories = [];
     let seriesData = [];
     const parsedData = data.map(
@@ -61,7 +59,6 @@ const BarChart = ({ response }) => {
 
     console.log("parsedData ", parsedData);
 
-    // **Check if `data` consists of single-column values or multiple-column values**
     const isSimpleBar = parsedData.every(
       (item) => typeof item === "string" || typeof item === "number"
     );
@@ -82,13 +79,13 @@ const BarChart = ({ response }) => {
     } else {
       console.log("in tabular form");
       // **Case 2: Grouped bar chart (multiple rows, multiple columns)**
-      const categories = parsedData.map((item) => item[0]); // Extract product names
-      const months = columns.slice(1); // Extract months (e.g., "Jul-24", "Aug-24")
-      const values = parsedData.map((item) => item.slice(1)); // Extract sales data
+      const categories = parsedData.map((item) => item[0]);
+      const months = columns.slice(1); 
+      const values = parsedData.map((item) => item.slice(1)); 
 
       const transformedSeries = months.map((month, i) => ({
         name: month,
-        data: values.map((val) => val[i]), // Extract values for each month
+        data: values.map((val) => val[i]), 
       }));
 
       setChartState((prevState) => ({
