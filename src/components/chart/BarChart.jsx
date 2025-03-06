@@ -5,9 +5,8 @@ const ReactApexChart = dynamic(() => import("react-apexcharts"), {
   ssr: false,
 });
 
-const BarChart = ({ response }) => {
+const BarChart = ({ response, isBar }) => {
   console.log("bar chart", response);
-  const [minWidth, setMinWidth] = useState("1000px");
   const [chartState, setChartState] = useState({
     series: [],
     options: {
@@ -47,15 +46,21 @@ const BarChart = ({ response }) => {
   });
 
   useEffect(() => {
-    if (!response) return;
+    if (!response || !response.data || !Array.isArray(response.data)) return;
 
     const { columns, data } = response;
 
     let categories = [];
     let seriesData = [];
-    const parsedData = data.map(
-      (item) => JSON.parse(item.replace(/'/g, '"')) // Convert single quotes to double quotes for valid JSON
-    );
+    let parsedData;
+
+    if (isBar) {
+      parsedData = data.map(
+        (item) => JSON.parse(item.replace(/'/g, '"')) // Convert single quotes to double quotes for valid JSON
+      );
+    } else {
+      parsedData = data;
+    }
 
     console.log("parsedData ", parsedData);
 
@@ -64,28 +69,29 @@ const BarChart = ({ response }) => {
     );
 
     if (isSimpleBar) {
-      console.log("in simple form");
+      // console.log("in simple form");
       // **Case 1: Simple bar chart (one column, multiple rows)**
       categories = columns;
       seriesData = data.map(Number);
-      console.log(categories, seriesData);
+      // console.log(categories, seriesData);
 
       setChartState((prevState) => ({
         ...prevState,
         series: [{ name: "Sales", data: seriesData }],
         options: { ...prevState.options, xaxis: { categories } },
       }));
-      setMinWidth(`${Math.max(800, categories.length * 80)}px`);
     } else {
-      console.log("in tabular form");
+      // console.log("in tabular form");
       // **Case 2: Grouped bar chart (multiple rows, multiple columns)**
       const categories = parsedData.map((item) => item[0]);
-      const months = columns.slice(1); 
-      const values = parsedData.map((item) => item.slice(1)); 
+      const months = columns.slice(1);
+      const values = parsedData.map((item) => item.slice(1));
+
+      console.log("cat", categories);
 
       const transformedSeries = months.map((month, i) => ({
         name: month,
-        data: values.map((val) => val[i]), 
+        data: values.map((val) => val[i]),
       }));
 
       setChartState((prevState) => ({
@@ -93,14 +99,11 @@ const BarChart = ({ response }) => {
         series: transformedSeries,
         options: { ...prevState.options, xaxis: { categories } },
       }));
-      setMinWidth(
-        `${Math.max(1000, categories.length * months.length * 40)}px`
-      );
     }
-  }, [response]);
+  }, [response, isBar]);
 
   return (
-    <div className="md:m-4 p-1">
+    <div className="md:m-2 p-1 mt-0">
       <div style={{ overflowX: "auto", width: "100%", height: "100%" }}>
         <div
           style={{
@@ -113,7 +116,7 @@ const BarChart = ({ response }) => {
             options={chartState.options}
             series={chartState.series}
             type="bar"
-            height={500}
+            height={400}
           />
         </div>
       </div>

@@ -48,7 +48,6 @@ function MainChat(props) {
   }, [props.docId]);
 
   useEffect(() => {
-
     chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
     inputRef.current?.focus();
   }, [messageList]);
@@ -198,22 +197,55 @@ function MainChat(props) {
       );
     }
 
+    let chartData;
+
+    if (response.pie || response.bar || response.table) {
+      chartData = response.pie || response.bar || response.table;
+      // console.log(chartData)
+    }
 
     return (
-      <div className="bg-white text-black rounded-[10px] md:w-[50%] w-[80%]  relative">
+      <div className="bg-indigo-200 px-4 pt-4 rounded-[10px] md:w-[50%] w-[80%]">
+
+      <div className={`${message.view === 'table' ? '' : 'bg-white'} text-black  rounded-[10px] relative`}>
+        <div className={` flex gap-2 justify-start w-full p-2  ${message.view === 'table' ? 'text-gray-200' : 'text-gray-300'}`}>
+          <FaChartPie
+            title="show pie chart"
+            onClick={() => handleViewChange(message.id, "pie")}
+            className={`cursor-pointer ${
+              message.view === "pie" ? "text-blue-600" : ""
+            } hover:text-gray-500 ${(response.table || response.bar) && "hidden"}`}
+          />
+          <FaChartBar
+            title="show bar chart"
+            onClick={() => handleViewChange(message.id, "bar")}
+            className={`cursor-pointer ${
+              message.view === "bar" ? "text-blue-600" : ""
+            } hover:text-gray-500 ${(response.table || response.bar) && "hidden"}`}
+          />
+
+          <FaTable
+            title="show table"
+            onClick={() => handleViewChange(message.id, "table")}
+            className={`cursor-pointer ${
+              message.view === "table" ? "text-blue-800" : ""
+            } hover:text-gray-500 ${(response.table || response.bar) && "hidden"}`}
+          />
+        </div>
 
         {/* Render the selected chart */}
         {message.view === "pie" ? (
-          <PieChart data={response.pie.data} labels={response.pie.columns} />
+          <PieChart data={chartData.data} labels={chartData.columns} />
         ) : message.view === "bar" ? (
-          <BarChart response={response.bar} />
+          <BarChart response={chartData} isBar={response.bar || response.pie} />
         ) : (
           message.view === "table" && (
-            <TableChart data={response.table} view={response.table} />
+            <TableChart data={chartData} view={response.table} />
           )
         )}
 
         <p className="mt-3">{response.llm2_response}</p>
+      </div>
       </div>
     );
   };

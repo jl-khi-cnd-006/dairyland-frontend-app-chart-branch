@@ -17,7 +17,7 @@ const convertTableData = (table) => {
 };
 
 const TableChart = ({ data, view }) => {
-  // console.log('data in table',data)
+  console.log('data in table',data)
   if (!data) return null;
 
   let tableData = [];
@@ -40,7 +40,7 @@ const TableChart = ({ data, view }) => {
   }
 
   return (
-    <div className={view ? " text-gray-900 p-4 rounded-lg min-w-[50%] h-[30vh]  overflow-hidden" : ' max-w-[100%] mt-4 h-full overflow-auto'}>
+    <div className={view ? " text-gray-900  rounded-lg min-w-[50%] max-h-[40vh]  overflow-hidden" : ' max-w-[100%] px-1 my-2 h-full overflow-auto'}>
       <div className="overflow-auto max-h-[40vh] ">
         <table className="min-w-full divide-y divide-gray-300 border border-gray-300 bg-red-400 ">
           <thead className="bg-gray-700 text-white rounded-lg">
