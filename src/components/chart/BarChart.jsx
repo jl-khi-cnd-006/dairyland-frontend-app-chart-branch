@@ -17,13 +17,25 @@ const BarChart = ({ response, isBar }) => {
       plotOptions: {
         bar: {
           columnWidth: "50%",
-          borderRadius: 2,
-          borderRadiusApplication: "end",
+          borderRadius: response?.data?.length <= 5 ? 8 : 2, 
+          borderRadiusApplication: "end", 
+          dataLabels: {
+            position: "top", 
+          },
         },
       },
       dataLabels: {
-        enabled: false,
-      },
+        enabled: response?.data?.length <= 5,
+        position: "top", 
+        style: {
+          fontSize: "12px", // Adjust text size
+          colors: ["#000"], // Set text color (adjust if needed)
+        },
+        offsetY: -20, // Moves labels upwards
+        formatter: function (val) {
+          return val.toLocaleString(); // Formats numbers with commas (optional)
+        },
+      },      
       legend: {
         show: true,
         position: "top",
@@ -42,6 +54,20 @@ const BarChart = ({ response, isBar }) => {
           text: "Values",
         },
       },
+      fill: {
+        type: "gradient",
+        gradient: {
+          shade: "dark", // Ensures a deep start
+          type: "vertical", // Vertical gradient from bottom to top
+          shadeIntensity: 1, // Intensity of the dark shade
+          gradientToColors: ["#40E0D0"], // Light Aqua at the top
+          inverseColors: true, 
+          opacityFrom: 1,
+          opacityTo: 1,
+          stops: [0, 100], // 0% (bottom) → 100% (top)
+        },
+      },
+
     },
   });
 
@@ -103,7 +129,7 @@ const BarChart = ({ response, isBar }) => {
   }, [response, isBar]);
 
   return (
-    <div className="md:m-2 p-1 mt-0">
+    <div className="md:m-2 p-1 mt-0 ">
       <div style={{ overflowX: "auto", width: "100%", height: "100%" }}>
         <div
           style={{

@@ -48,8 +48,13 @@ function MainChat(props) {
   }, [props.docId]);
 
   useEffect(() => {
-    chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
-    inputRef.current?.focus();
+    if (chatEndRef.current) {
+      // Scroll only if the last message has changed
+      const lastMessage = messageList[messageList.length - 1];
+      if (lastMessage?.response === null || messageList.length === 1) {
+        chatEndRef.current.scrollIntoView({ behavior: "smooth" });
+      }
+    }
   }, [messageList]);
 
   const clearChat = () => {
@@ -205,47 +210,65 @@ function MainChat(props) {
     }
 
     return (
-      <div className="bg-indigo-200 px-4 pt-4 rounded-[10px] md:w-[50%] w-[80%]">
+      <div className="bg-[#679ebf] bg-opacity-60 px-4 py-4 rounded-[10px] md:w-[50%] w-[80%]">
+        <div
+          className={`${
+            message.view === "table" ? "" : "bg-white"
+          } text-black p-2 rounded-[10px] relative`}
+        >
+          <div
+            className={` flex gap-2 justify-start w-full   ${
+              message.view === "table" ? "text-gray-200" : "text-gray-300"
+            }`}
+          >
+            <FaChartPie
+              title="show pie chart"
+              onClick={() => handleViewChange(message.id, "pie")}
+              className={`cursor-pointer ${
+                message.view === "pie" ? "text-blue-600" : ""
+              } hover:text-gray-500 ${
+                (response.table || response.bar) && "hidden"
+              }`}
+            />
+            <FaChartBar
+              title="show bar chart"
+              onClick={() => handleViewChange(message.id, "bar")}
+              className={`cursor-pointer ${
+                message.view === "bar" ? "text-blue-600" : ""
+              } hover:text-gray-500 ${
+                (response.table || response.bar) && "hidden"
+              }`}
+            />
 
-      <div className={`${message.view === 'table' ? '' : 'bg-white'} text-black  rounded-[10px] relative`}>
-        <div className={` flex gap-2 justify-start w-full p-2  ${message.view === 'table' ? 'text-gray-200' : 'text-gray-300'}`}>
-          <FaChartPie
-            title="show pie chart"
-            onClick={() => handleViewChange(message.id, "pie")}
-            className={`cursor-pointer ${
-              message.view === "pie" ? "text-blue-600" : ""
-            } hover:text-gray-500 ${(response.table || response.bar) && "hidden"}`}
-          />
-          <FaChartBar
-            title="show bar chart"
-            onClick={() => handleViewChange(message.id, "bar")}
-            className={`cursor-pointer ${
-              message.view === "bar" ? "text-blue-600" : ""
-            } hover:text-gray-500 ${(response.table || response.bar) && "hidden"}`}
-          />
+            <FaTable
+              title="show table"
+              onClick={() => handleViewChange(message.id, "table")}
+              className={`cursor-pointer ${
+                message.view === "table" ? "text-blue-800" : ""
+              } hover:text-gray-500 ${
+                (response.table || response.bar) && "hidden"
+              }`}
+            />
+          </div>
 
-          <FaTable
-            title="show table"
-            onClick={() => handleViewChange(message.id, "table")}
-            className={`cursor-pointer ${
-              message.view === "table" ? "text-blue-800" : ""
-            } hover:text-gray-500 ${(response.table || response.bar) && "hidden"}`}
-          />
+          {/* Render the selected chart */}
+          {message.view === "pie" ? (
+            <PieChart data={chartData.data} labels={chartData.columns} />
+          ) : message.view === "bar" ? (
+            <div className="">
+              <BarChart
+                response={chartData}
+                isBar={response.bar || response.pie}
+              />
+            </div>
+          ) : (
+            message.view === "table" && (
+              <TableChart data={chartData} view={response.table} />
+            )
+          )}
+
+          <p className="mt-3">{response.llm2_response}</p>
         </div>
-
-        {/* Render the selected chart */}
-        {message.view === "pie" ? (
-          <PieChart data={chartData.data} labels={chartData.columns} />
-        ) : message.view === "bar" ? (
-          <BarChart response={chartData} isBar={response.bar || response.pie} />
-        ) : (
-          message.view === "table" && (
-            <TableChart data={chartData} view={response.table} />
-          )
-        )}
-
-        <p className="mt-3">{response.llm2_response}</p>
-      </div>
       </div>
     );
   };
