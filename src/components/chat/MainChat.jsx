@@ -196,7 +196,7 @@ function MainChat(props) {
 
     if (typeof response === "string" || response.answer) {
       return (
-        <p className="bg-indigo-200 text-white p-4 rounded-[10px]">
+        <p className="bg-indigo-200 text-white p-4 rounded-[10px] w-fit max-w-[100%] md:max-w-[45%] min-w-[20%]">
           {response.answer}
         </p>
       );
@@ -210,7 +210,7 @@ function MainChat(props) {
     }
 
     return (
-      <div className="bg-[#679ebf] bg-opacity-60 px-4 py-4 rounded-[10px] md:w-[50%] w-[80%]">
+      <div className="bg-[#679ebf] bg-opacity-60 px-4 py-4 rounded-[10px] md:w-[45%] w-[80%]">
         <div
           className={`${
             message.view === "table" ? "" : "bg-white"
@@ -297,7 +297,7 @@ function MainChat(props) {
             {messageList?.map((message, index) => (
               <div key={index} className="w-full max-w-[100%]">
                 <div className="w-full">
-                  <p className="p-3 bg-gray-700 text-gray-200 text-[14px] md:text-[15px] rounded-[10px] w-fit max-w-[100%] md:max-w-[50%] min-w-[20%]">
+                  <p className="p-3 bg-gray-700 text-gray-200 text-[14px] md:text-[15px] rounded-[10px] w-fit max-w-[100%] md:max-w-[45%] min-w-[20%]">
                     {message.userMessage}
                   </p>
                 </div>
