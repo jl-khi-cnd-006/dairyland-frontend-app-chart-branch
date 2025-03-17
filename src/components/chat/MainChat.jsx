@@ -214,7 +214,7 @@ function MainChat(props) {
         <div
           className={`${
             message.view === "table" ? "" : "bg-white"
-          } text-black p-2 rounded-[10px] relative`}
+          } text-black p-1 rounded-[10px] relative` }
         >
           <div
             className={` flex gap-2 justify-start w-full   ${
@@ -235,19 +235,15 @@ function MainChat(props) {
               onClick={() => handleViewChange(message.id, "bar")}
               className={`cursor-pointer ${
                 message.view === "bar" ? "text-blue-600" : ""
-              } hover:text-gray-500 ${
-                (response.table || response.bar) && "hidden"
-              }`}
+              } hover:text-gray-500`}
             />
 
             <FaTable
               title="show table"
               onClick={() => handleViewChange(message.id, "table")}
               className={`cursor-pointer ${
-                message.view === "table" ? "text-blue-800" : ""
-              } hover:text-gray-500 ${
-                (response.table || response.bar) && "hidden"
-              }`}
+                message.view === "table" ? "text-blue-200" : ""
+              } hover:text-gray-500`}
             />
           </div>
 
@@ -287,6 +283,7 @@ function MainChat(props) {
           }`}
           disabled={messageList?.length === 0}
           onClick={() => clearChat()}
+          title="delete chats"
         />
       </div>
 

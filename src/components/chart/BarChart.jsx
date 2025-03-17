@@ -5,8 +5,15 @@ const ReactApexChart = dynamic(() => import("react-apexcharts"), {
   ssr: false,
 });
 
+const formatNumber = (num) => {
+  if (num >= 1e9) return (num / 1e9).toFixed(1) + "B";
+  if (num >= 1e6) return (num / 1e6).toFixed(1) + "M";
+  if (num >= 1e3) return (num / 1e3).toFixed(1) + "K";
+  return num.toString();
+};
+
 const BarChart = ({ response, isBar }) => {
-  console.log("bar chart", response);
+  // console.log("bar chart", response);
   const [chartState, setChartState] = useState({
     series: [],
     options: {
@@ -17,25 +24,25 @@ const BarChart = ({ response, isBar }) => {
       plotOptions: {
         bar: {
           columnWidth: "50%",
-          borderRadius: response?.data?.length <= 5 ? 8 : 2, 
-          borderRadiusApplication: "end", 
+          borderRadius: response?.data?.length <= 5 ? 8 : 2,
+          borderRadiusApplication: "end",
           dataLabels: {
-            position: "top", 
+            position: "top",
           },
         },
       },
       dataLabels: {
-        enabled: response?.data?.length <= 5,
-        position: "top", 
+        enabled: response?.data?.length <= 10,
+        position: "top",
         style: {
-          fontSize: "12px", // Adjust text size
-          colors: ["#000"], // Set text color (adjust if needed)
+          fontSize: "12px",
+          colors: ["#000"],
         },
-        offsetY: -20, // Moves labels upwards
+        offsetY: -20,
         formatter: function (val) {
-          return val.toLocaleString(); // Formats numbers with commas (optional)
+          return formatNumber(val);
         },
-      },      
+      },
       legend: {
         show: true,
         position: "top",
@@ -53,21 +60,25 @@ const BarChart = ({ response, isBar }) => {
         title: {
           text: "Values",
         },
+        labels: {
+          formatter: function (val) {
+            return formatNumber(val);
+          },
+        },
       },
       fill: {
         type: "gradient",
         gradient: {
-          shade: "dark", // Ensures a deep start
-          type: "vertical", // Vertical gradient from bottom to top
-          shadeIntensity: 1, // Intensity of the dark shade
-          gradientToColors: ["#40E0D0"], // Light Aqua at the top
-          inverseColors: true, 
+          shade: "dark",
+          type: "vertical",
+          shadeIntensity: 1,
+          gradientToColors: ["#40E0D0"],
+          inverseColors: true,
           opacityFrom: 1,
           opacityTo: 1,
-          stops: [0, 100], // 0% (bottom) → 100% (top)
+          stops: [0, 100],
         },
       },
-
     },
   });
 
@@ -81,14 +92,22 @@ const BarChart = ({ response, isBar }) => {
     let parsedData;
 
     if (isBar) {
-      parsedData = data.map(
-        (item) => JSON.parse(item.replace(/'/g, '"')) // Convert single quotes to double quotes for valid JSON
-      );
+      parsedData = data.map((item) => {
+        // console.log('item in bar', item)
+        try {
+          const parsedItem = JSON.parse(item.replace(/'/g, '"'));
+          return parsedItem.map(val => (val === null || val === "None" ? 0 : val));
+        } catch (error) {
+          console.log("Parsing error:", error, "for item:", item);
+          return item;
+        }
+      });
+      console.log("parsed in bar", parsedData);
     } else {
       parsedData = data;
     }
 
-    console.log("parsedData ", parsedData);
+    // console.log("parsedData ", parsedData);
 
     const isSimpleBar = parsedData.every(
       (item) => typeof item === "string" || typeof item === "number"
@@ -113,7 +132,7 @@ const BarChart = ({ response, isBar }) => {
       const months = columns.slice(1);
       const values = parsedData.map((item) => item.slice(1));
 
-      console.log("cat", categories);
+      // console.log("cat", categories);
 
       const transformedSeries = months.map((month, i) => ({
         name: month,
