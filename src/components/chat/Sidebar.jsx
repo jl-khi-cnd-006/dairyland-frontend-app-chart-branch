@@ -61,11 +61,11 @@ const freqData = [
     id: 5,
     prompt: "Show the distribution of gsr and gsr with tax gulshan in pie chart.",
   },
-  {
-    id: 6,
-    prompt:
-      "Bar chart displaying the months with the highest total sales volume of july and aug.",
-  },
+  // {
+  //   id: 6,
+  //   prompt:
+  //     "Bar chart displaying the months with the highest total sales volume of july and aug.",
+  // },
   {
     id: 7,
     prompt:

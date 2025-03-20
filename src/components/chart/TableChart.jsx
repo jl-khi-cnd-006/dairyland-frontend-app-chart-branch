@@ -114,7 +114,7 @@ const TableChart = ({ data, view }) => {
       className={
         view
           ? " text-gray-900 mt-2 rounded-lg min-w-[50%] max-h-[40vh]  overflow-hidden"
-          : " max-w-[100%] px-1 my-2 h-full overflow-auto"
+          : " max-w-[100%] sm:px-1 my-2 h-full overflow-auto"
       }
     >
       <div className="overflow-auto max-h-[40vh] ">
