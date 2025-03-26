@@ -117,7 +117,7 @@ function SideBar({ handleFrqClick }) {
           sidebarOpen ? "translate-x-0" : "-translate-x-full"
         } lg:translate-x-0  z-50`}
       >
-        <div className="px-[30px] md:px-[50px] my-3 flex items-center justify-center my-6 ">
+        <div className="px-[30px] md:px-[50px] flex items-center justify-center my-6 ">
           <Image
             src="/assets/images/logo.png"
             width={150}

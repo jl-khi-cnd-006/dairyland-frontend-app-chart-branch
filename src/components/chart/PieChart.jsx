@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import dynamic from 'next/dynamic';
+import dynamic from "next/dynamic";
 
-const ReactApexChart = dynamic(() => import('react-apexcharts'), { ssr: false });
+const ReactApexChart = dynamic(() => import("react-apexcharts"), { ssr: false });
 
 const PieChart = ({ data, labels }) => {
-  // console.log('data in pir chart',data, labels)
   const integerData = data.map((value) => Math.floor(parseFloat(value)));
+
   const [pieChartState, setPieChartState] = useState({
     series: integerData,
     options: {
@@ -13,17 +13,21 @@ const PieChart = ({ data, labels }) => {
         width: 380,
         type: "pie",
       },
-
       labels: labels,
+      legend: {
+        position: "right", // Default position
+        horizontalAlign: "center", 
+      },
       responsive: [
         {
-          breakpoint: 480,
+          breakpoint: 640, // When width is ≤ 640px
           options: {
             chart: {
-              width: 200,
+              width: "100%",
             },
             legend: {
-              position: "center",
+              position: "top", 
+              horizontalAlign: "center", 
             },
           },
         },
@@ -37,7 +41,7 @@ const PieChart = ({ data, labels }) => {
         options={pieChartState.options}
         series={pieChartState.series}
         type="pie"
-        height={500}
+        height={400}
       />
     </div>
   );
