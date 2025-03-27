@@ -9,7 +9,9 @@ import {
   FaChartBar,
   FaChartLine,
   FaTable,
+  FaBars,
 } from "react-icons/fa6";
+import { HiOutlineBars3 } from "react-icons/hi2";
 import Image from "next/image";
 import { BeatLoader } from "react-spinners";
 import { toast } from "react-toastify";
@@ -28,8 +30,9 @@ function MainChat(props) {
   const inputRef = useRef(null);
   const btnRef = useRef(null);
   const [isStreaming, setIsStreaming] = useState(false);
-  const [streamingMessageId, setStreamingMessageId] = useState(null);
+  const [messageId, setMessageId] = useState(null);
   const [view, setView] = useState(null);
+  const [openDownloadDropdown, setOpenDownloadDropdown] = useState(false);
 
   useEffect(() => {
     if (props?.freqPrompt) {
@@ -183,6 +186,33 @@ function MainChat(props) {
     );
   };
 
+  const handleDownloadTable = (messageId) => {
+    setOpenDownloadDropdown(!openDownloadDropdown);
+    setMessageId(messageId);
+  };
+
+  const generateRandomFilename = () => {
+    return Math.random().toString(36).substring(2, 10); // Extracts 8 random lowercase letters
+  };
+
+  const handleDownloadCSV = (message) => {
+    // console.log(message.columns);
+    setOpenDownloadDropdown(false)
+    if (!message.data.length) return;
+
+    const csvHeaders = message.columns.join(",");
+    const csvRows = message.data.map((row) => Object.values(row).join(","));
+    const csvContent = [csvHeaders, ...csvRows].join("\n");
+
+    const blob = new Blob([csvContent], { type: "text/csv" });
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = `${generateRandomFilename()}.csv`; // Set random filename
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   const renderResponse = (message) => {
     const response = message.response;
     // console.log("res", response);
@@ -206,7 +236,6 @@ function MainChat(props) {
 
     if (response.pie || response.bar || response.table) {
       chartData = response.pie || response.bar || response.table;
-      // console.log(chartData)
     }
 
     return (
@@ -214,49 +243,76 @@ function MainChat(props) {
         <div
           className={`${
             message.view === "table" ? "" : "bg-white"
-          } text-black p-1 rounded-[10px] relative` }
+          } text-black p-1 rounded-[10px] relative`}
         >
           <div
-            className={` flex gap-2 justify-start w-full   ${
+            className={` flex items-center justify-between w-full   ${
               message.view === "table" ? "text-gray-200" : "text-gray-300"
             }`}
           >
-            <FaChartPie
-              title="show pie chart"
-              onClick={() => handleViewChange(message.id, "pie")}
-              className={`cursor-pointer ${
-                message.view === "pie" ? "text-blue-600" : ""
-              } hover:text-gray-500 ${
-                (response.table || response.bar) && "hidden"
-              }`}
-            />
-            <FaChartBar
-              title="show bar chart"
-              onClick={() => handleViewChange(message.id, "bar")}
-              className={`cursor-pointer ${
-                message.view === "bar" ? "text-blue-600" : ""
-              } hover:text-gray-500`}
-            />
+            <div className="flex gap-2 w-full">
+              <FaChartPie
+                title="show pie chart"
+                onClick={() => handleViewChange(message.id, "pie")}
+                className={`cursor-pointer ${
+                  message.view === "pie" ? "text-blue-600" : ""
+                } hover:text-gray-500 ${
+                  (response.table || response.bar) && "hidden"
+                }`}
+              />
+              <FaChartBar
+                title="show bar chart"
+                onClick={() => handleViewChange(message.id, "bar")}
+                className={`cursor-pointer ${
+                  message.view === "bar" ? "text-blue-600" : ""
+                } hover:text-gray-500`}
+              />
 
-            <FaTable
-              title="show table"
-              onClick={() => handleViewChange(message.id, "table")}
-              className={`cursor-pointer ${
-                message.view === "table" ? "text-blue-200" : ""
-              } hover:text-gray-500`}
-            />
+              <FaTable
+                title="show table"
+                onClick={() => handleViewChange(message.id, "table")}
+                className={`cursor-pointer ${
+                  message.view === "table" ? "text-blue-200" : ""
+                } hover:text-gray-500`}
+              />
+            </div>
+            <div className="relative w-full flex justify-end">
+              {message.view === "table" && (
+                <FaBars
+                  className="cursor-pointer"
+                  title="Menu"
+                  onClick={() => handleDownloadTable(message.id)}
+                />
+              )}
+              {message.view === "table" &&
+                openDownloadDropdown &&
+                message.id == messageId && (
+                  <div className=" absolute top-[20px] right-2 z-50 bg-white text-gray-600 text-[12px] rounded-sm">
+                    <ul className="*:px-3">
+                      <li
+                        className=" py-2 cursor-pointer"
+                        title="Download CSV"
+                        onClick={() => handleDownloadCSV(message.response.table)}
+                      >
+                        Download CSV
+                      </li>
+                      <li className=" pb-2 cursor-pointer" title="Download PDF">
+                        Download PDF
+                      </li>
+                    </ul>
+                  </div>
+                )}
+            </div>
           </div>
 
           {/* Render the selected chart */}
           {message.view === "pie" ? (
             <PieChart data={chartData.data} labels={chartData.columns} />
           ) : message.view === "bar" ? (
-            <div className="">
-              <BarChart
-                response={chartData}
-                isBar={response.bar || response.pie}
-              />
-            </div>
+            <BarChart
+              response={chartData}
+              isBar={response.bar || response.pie}
+            />
           ) : (
             message.view === "table" && (
               <TableChart data={chartData} view={response.table} />
@@ -270,7 +326,7 @@ function MainChat(props) {
   };
 
   return (
-    <div className="min-w-[92%] md:min-w-[92%] max-w-[92%] md:max-w-[92%] lg:min-w-[80%] md:max-w-[80%] h-full px-[10px] md:px-[30px] py-[10px] md:py-[30px] bg-black-600 flex flex-col justify-between">
+    <div className="min-w-[92%] md:min-w-[92%] max-w-[92%] lg:min-w-[80%] md:max-w-[80%] h-full px-[10px] md:px-[30px] py-[10px] md:py-[30px] bg-black-600 flex flex-col justify-between">
       {/* Top Bar */}
       <div className="top-bar flex pb-3 px-5 justify-between items-center border-b-[1px] border-white-100 min-h-[7%] max-h-[7%]">
         <h1 className="text-[14px] md:text-[20px] font-bold text-white">
@@ -279,7 +335,7 @@ function MainChat(props) {
         </h1>
         <FaRegTrashCan
           className={`text-white text-[30px] md:text-[40px] bg-gray-700 p-2 rounded-[7px] ${
-            messageList?.length === 0 ? "cursor-not-allowed" : "cursor-pointer"
+            messageList?.length === 0 ? "hidden" : "cursor-pointer"
           }`}
           disabled={messageList?.length === 0}
           onClick={() => clearChat()}

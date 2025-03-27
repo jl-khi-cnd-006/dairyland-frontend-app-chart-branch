@@ -2,6 +2,7 @@
 import Image from "next/image";
 import React, { useEffect, useRef, useState } from "react";
 import { FaBars } from "react-icons/fa6";
+import { IoClose } from "react-icons/io5";
 
 // const freqData = [
 //   // {
@@ -89,14 +90,13 @@ function SideBar({ handleFrqClick }) {
     };
 
     const handleResize = () => {
-      const isSmallScreen = window.innerWidth <= 991;
-      setSidebarOpen(!isSmallScreen);
+      setSidebarOpen(false);
     };
 
     window.addEventListener("resize", handleResize);
     document.addEventListener("mousedown", handleClickOutside);
 
-    // handleResize();
+
 
     return () => {
       window.removeEventListener("resize", handleResize);
@@ -117,7 +117,8 @@ function SideBar({ handleFrqClick }) {
           sidebarOpen ? "translate-x-0" : "-translate-x-full"
         } lg:translate-x-0  z-50`}
       >
-        <div className="px-[30px] md:px-[50px] my-3 flex items-center justify-center my-6 ">
+
+        <div className="px-[30px] md:px-[50px] flex items-center justify-center my-6">
           <Image
             src="/assets/images/logo.png"
             width={150}
@@ -130,6 +131,13 @@ function SideBar({ handleFrqClick }) {
             Dairy Land
           </span> */}
         </div>
+        { sidebarOpen &&
+          <div className="text-white p-2 absolute right-0 cursor-pointer" onClick={() => setSidebarOpen(false)}>
+            <IoClose />
+          </div>
+
+        }
+    
         <hr />
         <div className="text-white px-4 py-2 mt-5">
           <h3 className="text-xl font-bold mb-4 text-indigo-200 text-center">
@@ -146,7 +154,7 @@ function SideBar({ handleFrqClick }) {
               freqData?.map((item) => {
                 return (
                   <div
-                    className={`bg-gray-700 p-2 rounded-md cursor-pointer hover:text-indigo-200 hover:font-[500]`}
+                    className={`bg-gray-700 p-2 rounded-md cursor-pointer hover:text-blue-400 `}
                     key={item.id}
                     onClick={() => {
                       setSidebarOpen(false);
