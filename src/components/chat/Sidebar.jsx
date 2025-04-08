@@ -48,7 +48,7 @@ const freqData = [
   },
   {
     id: 2,
-    prompt: "Make a Pie chart showing the revenue share of the top 5 brands.",
+    prompt: "Make a Pie chart showing the revenue share of the top 5 products.",
   },
   {
     id: 3,

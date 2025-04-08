@@ -105,10 +105,10 @@ function Navbar() {
             <li onClick={() => {scrollToTop("architecture-section"); setActiveItem(2)}} className={`${activeItem === 2 ? "relative font-[700] text-indigo-200 md:before:content-['•'] before:absolute before:-left-3 before:text-indigo-200" : ""}`}>How It Works</li>
             <li onClick={() => {setActiveItem(3); setDropdownOpen(pre => !pre) }} className={`${activeItem === 3 ? "relative font-[700] text-indigo-200 md:before:content-['•'] before:absolute before:-left-3 before:text-indigo-200" : ""}`}>Products</li>
             {dropdownOpen && (
-              <div ref={productRef} className="md:absolute z-50 top-[100%] left-[50%] bg-transparent text-white rounded-lg shadow-lg w-36 ">
+              <div ref={productRef} className="md:absolute z-50 top-[100%] left-[50%] bg-[#0a101a86] text-white rounded-lg shadow-lg shadow-slate-700 w-36 ">
                 <ul className="py-2 text-sm">
-                  <li className="flex items-center px-4 py-2 hover:scale-110 hover:text-indigo-200 hover:font-[700] cursor-pointer">
-                    <span onClick={() => {scrollToTop("chatgene-section"); setDropdownOpen(false)}}>Chat Gene</span>
+                  <li onClick={() => {scrollToTop("chatgene-section"); setDropdownOpen(false)}} className="flex items-center px-4 py-2 hover:scale-110 hover:text-indigo-200 hover:font-[700] cursor-pointer">
+                    <span >Chat Gene</span>
                   </li>
                   {/* <li className="flex items-center px-4 py-2 hover:scale-110 hover:text-indigo-200 hover:font-[700] cursor-pointer">
                     <span onClick={() => {scrollToTop("chatcsv-section"); setDropdownOpen(false)}}>Chat CSV</span>

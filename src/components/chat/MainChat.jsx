@@ -54,7 +54,7 @@ function MainChat(props) {
     if (chatEndRef.current) {
       // Scroll only if the last message has changed
       const lastMessage = messageList[messageList.length - 1];
-      if (lastMessage?.response === null || messageList.length === 1) {
+      if (lastMessage?.response === null || lastMessage?.response !== null || messageList.length === 1) {
         chatEndRef.current.scrollIntoView({ behavior: "smooth" });
       }
     }
@@ -178,7 +178,7 @@ function MainChat(props) {
   };
 
   const handleViewChange = (messageId, newView) => {
-    console.log("veiw", newView);
+    // console.log("veiw", newView);
     setMessageList((prevMessages) =>
       prevMessages.map((msg) =>
         msg.id === messageId ? { ...msg, view: newView } : msg

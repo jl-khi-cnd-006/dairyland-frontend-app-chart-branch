@@ -98,11 +98,11 @@ const BarChart = ({ response, isBar }) => {
           const parsedItem = JSON.parse(item.replace(/'/g, '"'));
           return parsedItem.map(val => (val === null || val === "None" ? 0 : val));
         } catch (error) {
-          console.log("Parsing error:", error, "for item:", item);
+          // console.log("Parsing error:", error, "for item:", item);
           return item;
         }
       });
-      console.log("parsed in bar", parsedData);
+      // console.log("parsed in bar", parsedData);
     } else {
       parsedData = data;
     }
