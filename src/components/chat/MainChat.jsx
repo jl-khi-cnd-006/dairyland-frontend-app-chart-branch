@@ -21,6 +21,7 @@ import BarChart from "../chart/BarChart";
 import PieChart from "../chart/PieChart";
 import LineChart from "../chart/LineChart";
 import TableChart from "../chart/TableChart";
+import Button from "../themeToggle/Button";
 
 const BASEURL = process.env.NEXT_PUBLIC_BASE_URL;
 function MainChat(props) {
@@ -33,6 +34,9 @@ function MainChat(props) {
   const [messageId, setMessageId] = useState(null);
   const [view, setView] = useState(null);
   const [openDownloadDropdown, setOpenDownloadDropdown] = useState(false);
+  const prevMessageCountRef = useRef(0);
+  const prevLastMessageIdRef = useRef(null);
+  const prevLastResponseRef = useRef(null);
 
   useEffect(() => {
     if (props?.freqPrompt) {
@@ -51,13 +55,28 @@ function MainChat(props) {
   }, [props.docId]);
 
   useEffect(() => {
-    if (chatEndRef.current) {
-      // Scroll only if the last message has changed
-      const lastMessage = messageList[messageList.length - 1];
-      if (lastMessage?.response === null || lastMessage?.response !== null || messageList.length === 1) {
-        chatEndRef.current.scrollIntoView({ behavior: "smooth" });
-      }
+    const prevCount = prevMessageCountRef.current;
+    const currentCount = messageList.length;
+    const lastMessage = messageList[messageList.length - 1];
+
+    const lastId = lastMessage?.id;
+    const lastResponse = lastMessage?.response;
+
+    const shouldScroll =
+      // New message added
+      currentCount > prevCount ||
+      // Response updated (but same message id)
+      (lastId === prevLastMessageIdRef.current &&
+        lastResponse !== prevLastResponseRef.current);
+
+    if (shouldScroll && chatEndRef.current) {
+      chatEndRef.current.scrollIntoView({ behavior: "smooth" });
     }
+
+    // Update refs
+    prevMessageCountRef.current = currentCount;
+    prevLastMessageIdRef.current = lastId;
+    prevLastResponseRef.current = lastResponse;
   }, [messageList]);
 
   const clearChat = () => {
@@ -197,7 +216,7 @@ function MainChat(props) {
 
   const handleDownloadCSV = (message) => {
     // console.log(message.columns);
-    setOpenDownloadDropdown(false)
+    setOpenDownloadDropdown(false);
     if (!message.data.length) return;
 
     const csvHeaders = message.columns.join(",");
@@ -292,7 +311,9 @@ function MainChat(props) {
                       <li
                         className=" py-2 cursor-pointer"
                         title="Download CSV"
-                        onClick={() => handleDownloadCSV(message.response.table)}
+                        onClick={() =>
+                          handleDownloadCSV(message.response.table)
+                        }
                       >
                         Download CSV
                       </li>
@@ -333,14 +354,17 @@ function MainChat(props) {
           Ask Anything About Your
           <span className="text-indigo-200"> Uploaded Doc</span>
         </h1>
-        <FaRegTrashCan
-          className={`text-white text-[30px] md:text-[40px] bg-gray-700 p-2 rounded-[7px] ${
-            messageList?.length === 0 ? "hidden" : "cursor-pointer"
-          }`}
-          disabled={messageList?.length === 0}
-          onClick={() => clearChat()}
-          title="delete chats"
-        />
+        <div className="flex gap-4 items-center">
+          <Button />
+          <FaRegTrashCan
+            className={`text-white text-[30px] md:text-[40px] bg-gray-700 p-2 rounded-[7px] ${
+              messageList?.length === 0 ? "hidden" : "cursor-pointer"
+            }`}
+            disabled={messageList?.length === 0}
+            onClick={() => clearChat()}
+            title="delete chats"
+          />
+        </div>
       </div>
 
       {/* Message List */}
