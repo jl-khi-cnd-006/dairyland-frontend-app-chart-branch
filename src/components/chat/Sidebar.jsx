@@ -115,7 +115,7 @@ function SideBar({ handleFrqClick }) {
       </div>
       <div
         ref={sidebarRef}
-        className={`fixed lg:relative top-0 left-0 h-full bg-gray-600 px-[5px] py-[5px] flex flex-col justify-start transition-transform ${
+        className={`fixed lg:relative top-0 left-0 h-full dark:bg-gray-600 bg-[#2e333bd0] px-[5px] py-[5px] flex flex-col justify-start transition-transform ${
           sidebarOpen ? "translate-x-0" : "-translate-x-full"
         } lg:translate-x-0  z-50`}
       >
@@ -156,7 +156,7 @@ function SideBar({ handleFrqClick }) {
               freqData?.map((item) => {
                 return (
                   <div
-                    className={`bg-gray-700 p-2 rounded-md cursor-pointer hover:text-blue-400 `}
+                    className={`dark:bg-gray-700 bg-gray-600 p-2 rounded-md cursor-pointer hover:text-blue-400 `}
                     key={item.id}
                     onClick={() => {
                       setSidebarOpen(false);

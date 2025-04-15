@@ -2,7 +2,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { Inter } from "next/font/google";
+import { ThemeProvider } from "next-themes";
 import ClientRootLayout from "./ClientRootLayout";
 
 const geistSans = localFont({
@@ -26,11 +26,14 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <ClientRootLayout>{children}</ClientRootLayout>
+        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
+          <ClientRootLayout>{children}</ClientRootLayout>
+          <ToastContainer />
+        </ThemeProvider>
       </body>
     </html>
   );

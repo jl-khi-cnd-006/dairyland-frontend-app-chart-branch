@@ -1,22 +1,27 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./button.css";
+import { useTheme } from "next-themes";
 
 const Button = () => {
-  const [checked, setChecked] = useState(true);
+  const { theme, setTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
 
-  const handleToggle = () => {
-    setChecked(!checked);
-  };
+  // Prevents SSR mismatch
+  useEffect(() => setMounted(true), []);
+
+  if (!mounted) return null;
 
   return (
-    <div>
-      <label className="ui-switch">
-        <input type="checkbox" checked={checked} onChange={handleToggle} />
-        <div className="slider">
-          <div className="circle"></div>
-        </div>
-      </label>
-    </div>
+    <label className="ui-switch" >
+      <input
+        type="checkbox"
+        checked={theme === "dark"}
+        onChange={() => setTheme(theme === "dark" ? "light" : "dark")}
+      />
+      <div className="slider">
+        <div className="circle"></div>
+      </div>
+    </label>
   );
 };
 

@@ -27,6 +27,10 @@
     position: relative;
     cursor: pointer;
   }
+
+  /* .slider .circle {
+    background: #03a1d8; /* your blue color */
+
   
   .slider .circle {
     top: calc(var(--circle-inset) * -1);
@@ -54,13 +58,24 @@
     box-shadow: 0px 2px 1px -1px rgba(0,0,0,0.2), 0px 1px 1px 0px rgba(0,0,0,0.14), 0px 1px 3px 0px rgba(0,0,0,0.12);
     ;
   }
+
+  .light .slider{
+    background: #9595963a;
+    /* border: 1px solid #022632d0; */
+  }
+
+  .light .circle{
+    background-color: #141d2b;
+    border: 1px solid rgba(46, 51, 59, 0.316);
+  }
+
   
   .slider .circle::before {
     content: "";
     position: absolute;
     width: 100%;
     height: 100%;
-    background: rgba(255, 255, 255, 0.75);
+    background: rgba(0,0,0,0.2);
     border-radius: inherit;
     -webkit-transition: all 500ms;
     -o-transition: all 500ms;

@@ -113,7 +113,7 @@ const TableChart = ({ data, view }) => {
       }
     >
       <div className="overflow-auto max-h-[40vh] rounded-t-lg">
-        <table className="min-w-full divide-y rounded-t-lg divide-gray-300 border border-gray-300 bg-[#2e333b7e]">
+        <table className="min-w-full divide-y rounded-t-lg divide-gray-300 border dark:border-gray-300 border-gray-600 dark:bg-[#2e333b7e] bg-transparent">
           <thead className="bg-gray-700 text-white sticky top-0">
             <tr>
               {tableData.length >= 3 && (
@@ -137,14 +137,14 @@ const TableChart = ({ data, view }) => {
               <tr key={index}>
                 {/* Show Serial No. only if dataset length is >= 3 */}
                 {tableData.length >= 3 && (
-                  <td className="px-4 py-2 whitespace-nowrap text-sm text-white border-e border-b border-gray-300">
+                  <td className="px-4 py-2 whitespace-nowrap text-sm dark:text-white text-gray-600 border-e border-b border-gray-300">
                     {index + 1}
                   </td>
                 )}
                 {Object.keys(item).map((column, colIndex) => (
                   <td
                     key={colIndex}
-                    className="px-4 py-2 whitespace-nowrap text-sm text-white border-e border-b border-gray-300"
+                    className="px-4 py-2 whitespace-nowrap text-sm dark:text-white text-gray-600 border-e border-b border-gray-300"
                   >
                     {item[column]}
                   </td>

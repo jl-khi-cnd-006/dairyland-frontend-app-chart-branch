@@ -22,6 +22,7 @@ import PieChart from "../chart/PieChart";
 import LineChart from "../chart/LineChart";
 import TableChart from "../chart/TableChart";
 import Button from "../themeToggle/Button";
+import { useTheme } from "next-themes";
 
 const BASEURL = process.env.NEXT_PUBLIC_BASE_URL;
 function MainChat(props) {
@@ -34,6 +35,7 @@ function MainChat(props) {
   const [messageId, setMessageId] = useState(null);
   const [view, setView] = useState(null);
   const [openDownloadDropdown, setOpenDownloadDropdown] = useState(false);
+  const { theme } = useTheme();
   const prevMessageCountRef = useRef(0);
   const prevLastMessageIdRef = useRef(null);
   const prevLastResponseRef = useRef(null);
@@ -266,7 +268,7 @@ function MainChat(props) {
         >
           <div
             className={` flex items-center justify-between w-full   ${
-              message.view === "table" ? "text-gray-200" : "text-gray-300"
+              message.view === "table" ? "dark:text-gray-200 text-[#e6edf5]" : "text-gray-300"
             }`}
           >
             <div className="flex gap-2 w-full">
@@ -291,11 +293,11 @@ function MainChat(props) {
                 title="show table"
                 onClick={() => handleViewChange(message.id, "table")}
                 className={`cursor-pointer ${
-                  message.view === "table" ? "text-blue-200" : ""
+                  message.view === "table" ? "dark:text-blue-200 text-blue-500" : ""
                 } hover:text-gray-500`}
               />
             </div>
-            <div className="relative w-full flex justify-end">
+            {/* <div className="relative w-full flex justify-end">
               {message.view === "table" && (
                 <FaBars
                   className="cursor-pointer"
@@ -323,7 +325,7 @@ function MainChat(props) {
                     </ul>
                   </div>
                 )}
-            </div>
+            </div> */}
           </div>
 
           {/* Render the selected chart */}
@@ -347,17 +349,17 @@ function MainChat(props) {
   };
 
   return (
-    <div className="min-w-[92%] md:min-w-[92%] max-w-[92%] lg:min-w-[80%] md:max-w-[80%] h-full px-[10px] md:px-[30px] py-[10px] md:py-[30px] bg-black-600 flex flex-col justify-between">
+    <div className="min-w-[92%] md:min-w-[92%] max-w-[92%] lg:min-w-[80%] md:max-w-[80%] h-full px-[10px] md:px-[30px] py-[10px] md:py-[30px] dark:bg-black-600 bg-[#d0cfcfe3] flex flex-col justify-between">
       {/* Top Bar */}
-      <div className="top-bar flex pb-3 px-5 justify-between items-center border-b-[1px] border-white-100 min-h-[7%] max-h-[7%]">
-        <h1 className="text-[14px] md:text-[20px] font-bold text-white">
+      <div className="top-bar flex pb-3 px-5 justify-between items-center border-b-[1px] dark:border-white-100 border-gray-300  min-h-[7%] max-h-[7%]">
+        <h1 className="text-[14px] md:text-[20px] font-bold dark:text-white text-gray-600">
           Ask Anything About Your
           <span className="text-indigo-200"> Uploaded Doc</span>
         </h1>
         <div className="flex gap-4 items-center">
           <Button />
           <FaRegTrashCan
-            className={`text-white text-[30px] md:text-[40px] bg-gray-700 p-2 rounded-[7px] ${
+            className={`dark:text-white text-[30px] md:text-[40px] dark:bg-gray-600 bg-[#eeebe8] text-gray-100 p-2 rounded-[7px] ${
               messageList?.length === 0 ? "hidden" : "cursor-pointer"
             }`}
             disabled={messageList?.length === 0}
@@ -374,7 +376,7 @@ function MainChat(props) {
             {messageList?.map((message, index) => (
               <div key={index} className="w-full max-w-[100%]">
                 <div className="w-full">
-                  <p className="p-3 bg-gray-700 text-gray-200 text-[14px] md:text-[15px] rounded-[10px] w-fit max-w-[100%] md:max-w-[45%] min-w-[20%]">
+                  <p className="p-3 dark:bg-gray-700 bg-[#eeebe8] dark:text-gray-200 text-[14px] md:text-[15px] rounded-[10px] w-fit max-w-[100%] md:max-w-[45%] min-w-[20%]">
                     {message.userMessage}
                   </p>
                 </div>
@@ -383,7 +385,7 @@ function MainChat(props) {
                     <div className="bg-indigo-200 p-3 rounded-[10px] w-fit max-w-[100%] md:max-w-[50%]">
                       <BeatLoader
                         size={10}
-                        color="#000000"
+                        color={theme === "dark" ? "#000000" : "#ffffff"}
                         className="bg-transparent w-full"
                       />
                     </div>
@@ -410,7 +412,7 @@ function MainChat(props) {
             height={300}
             src={`/assets/images/Chatgene.png`}
             alt="chat-bg"
-            className="w-[250px] md:w-[350px] h-auto filter grayscale"
+            className="w-[250px] md:w-[350px] h-auto filter dark:grayscale opacity-50 "
           />
           <p className="text-indigo-200 text-[16px] md:text-[18px] text-center">
             Model is trained based on uploaded document <br /> Now ask anything
@@ -419,38 +421,46 @@ function MainChat(props) {
       )}
 
       {/* Chat Footer */}
-      <div className="chat-footer mt-3 min-h-[7%] max-h-[7%] w-full flex items-center">
+      <div className="chat-footer mt-3  w-full flex items-center">
         <form
           onSubmit={handleMessage}
           className="flex justify-between items-center gap-2 md:gap-3 w-full"
         >
-          <div className="flex justify-between items-center w-full bg-gray-700 p-2 md:p-3 rounded-[7px] text-white gap-2">
-            <input
+          <div className="flex justify-between items-center w-full dark:bg-gray-700 dark:border-0 border border-gray-400 focus-within:border-indigo-200 px-2 md:px-3 rounded-[7px] text-white gap-2 transition-colors duration-200">
+            <textarea
               name="message"
               ref={inputRef}
               disabled={loading}
-              className={`w-full text-white bg-transparent focus:outline-none ${
-                loading ? " cursor-not-allowed" : ""
-              }`}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" && !e.shiftKey) {
+                  e.preventDefault();
+                  e.currentTarget.form.requestSubmit();
+                }
+              }}
+              className={`w-full resize-none overflow-y-auto dark:text-white pt-2 text-black bg-transparent focus:outline-none dark:caret-gray-400 caret-indigo-200
+  min-h-[24px] max-h-[90px] ${loading ? "cursor-not-allowed" : ""}`}
               placeholder="Ask Anything"
               autoComplete="off"
               required
             />
-            <FaMicrophoneLines
-              className={`text-gray-800 cursor-pointer ${
+            {/* <FaMicrophoneLines
+              title="record"
+              size={20}
+              className={`text-gray-800 cursor-pointer dark:hover:text-blue-300 hover:text-gray-500 ${
                 loading ? "text-gray-500" : ""
               }`}
-            />
+            /> */}
           </div>
+
           <button
             type="submit"
             ref={btnRef}
             disabled={loading}
-            className={`bg-indigo-200 p-3 md:p-4 rounded-[7px] ${
+            className={`bg-indigo-200 p-3 md:p-[18px] rounded-[7px] ${
               loading ? "opacity-50 cursor-not-allowed" : "cursor-pointer"
             }`}
           >
-            <FaPaperPlane className="text-white" />
+            <FaPaperPlane className="text-white" size={20} />
           </button>
         </form>
       </div>
