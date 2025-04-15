@@ -412,7 +412,7 @@ function MainChat(props) {
             height={300}
             src={`/assets/images/Chatgene.png`}
             alt="chat-bg"
-            className="w-[250px] md:w-[350px] h-auto filter dark:grayscale opacity-50 "
+            className="w-[250px] md:w-[350px] h-auto filter dark:grayscale dark:opacity-50 "
           />
           <p className="text-indigo-200 text-[16px] md:text-[18px] text-center">
             Model is trained based on uploaded document <br /> Now ask anything
@@ -426,7 +426,7 @@ function MainChat(props) {
           onSubmit={handleMessage}
           className="flex justify-between items-center gap-2 md:gap-3 w-full"
         >
-          <div className="flex justify-between items-center w-full dark:bg-gray-700 dark:border-0 border border-gray-400 focus-within:border-indigo-200 px-2 md:px-3 rounded-[7px] text-white gap-2 transition-colors duration-200">
+          <div className="flex justify-between items-center w-full dark:bg-gray-700 bg-[#eeebe8] dark:border-0 border border-gray-400 focus-within:border-gray-100 px-2 md:px-3 rounded-[7px] text-white gap-2 transition-colors duration-200">
             <textarea
               name="message"
               ref={inputRef}
@@ -437,9 +437,9 @@ function MainChat(props) {
                   e.currentTarget.form.requestSubmit();
                 }
               }}
-              className={`w-full resize-none overflow-y-auto dark:text-white pt-2 text-black bg-transparent focus:outline-none dark:caret-gray-400 caret-indigo-200
+              className={`placeholder-gray-500 dark:placeholder-gray-100 w-full resize-none overflow-y-auto dark:text-white pt-2 text-black bg-transparent focus:outline-none dark:caret-gray-400 caret-indigo-200
   min-h-[24px] max-h-[90px] ${loading ? "cursor-not-allowed" : ""}`}
-              placeholder="Ask Anything"
+              placeholder="Ask Anything..."
               autoComplete="off"
               required
             />
