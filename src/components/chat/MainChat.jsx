@@ -30,6 +30,9 @@ function MainChat(props) {
   const [isStreaming, setIsStreaming] = useState(false);
   const [streamingMessageId, setStreamingMessageId] = useState(null);
   const [view, setView] = useState(null);
+  const prevMessageCountRef = useRef(0);
+   const prevLastMessageIdRef = useRef(null);
+   const prevLastResponseRef = useRef(null);
 
   useEffect(() => {
     if (props?.freqPrompt) {
@@ -48,14 +51,29 @@ function MainChat(props) {
   }, [props.docId]);
 
   useEffect(() => {
-    if (chatEndRef.current) {
-      // Scroll only if the last message has changed
-      const lastMessage = messageList[messageList.length - 1];
-      if (lastMessage?.response === null || messageList.length === 1) {
-        chatEndRef.current.scrollIntoView({ behavior: "smooth" });
-      }
-    }
-  }, [messageList]);
+    const prevCount = prevMessageCountRef.current;
+     const currentCount = messageList.length;
+     const lastMessage = messageList[messageList.length - 1];
+ 
+     const lastId = lastMessage?.id;
+     const lastResponse = lastMessage?.response;
+ 
+     const shouldScroll =
+       // New message added
+       currentCount > prevCount ||
+       // Response updated (but same message id)
+       (lastId === prevLastMessageIdRef.current &&
+         lastResponse !== prevLastResponseRef.current);
+ 
+     if (shouldScroll && chatEndRef.current) {
+       chatEndRef.current.scrollIntoView({ behavior: "smooth" });
+     }
+ 
+     // Update refs
+     prevMessageCountRef.current = currentCount;
+     prevLastMessageIdRef.current = lastId;
+     prevLastResponseRef.current = lastResponse;
+   }, [messageList]);
 
   const clearChat = () => {
     setMessageList([]);
