@@ -351,7 +351,7 @@ function MainChat(props) {
             <PieChart data={chartData.data} labels={chartData.columns} />
           ) : message.view === "bar" ? (
             <BarChart
-              response={chartData}
+              response={chartData} 
               isBar={response.bar || response.pie}
             />
           ) : message.view === "line" ? (
