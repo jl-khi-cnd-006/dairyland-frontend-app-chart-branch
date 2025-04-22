@@ -126,6 +126,8 @@ function MainChat(props) {
                 ? "pie"
                 : response.bar
                 ? "bar"
+                : response.line
+                ? "line"
                 : response.table
                 ? "table"
                 : "default",
@@ -180,6 +182,8 @@ function MainChat(props) {
                 ? "pie"
                 : response?.bar
                 ? "bar"
+                : response.line
+                ? "line"
                 : response?.table
                 ? "table"
                 : "default",
@@ -192,6 +196,8 @@ function MainChat(props) {
         ? "pie"
         : response?.bar
         ? "bar"
+        : response.line
+        ? "line"
         : response?.table
         ? "table"
         : "default"
@@ -255,8 +261,9 @@ function MainChat(props) {
 
     let chartData;
 
-    if (response.pie || response.bar || response.table) {
-      chartData = response.pie || response.bar || response.table;
+    if (response.pie || response.bar || response.table || response.line) {
+      chartData =
+        response.pie || response.bar || response.table || response.line;
     }
 
     return (
@@ -268,7 +275,9 @@ function MainChat(props) {
         >
           <div
             className={` flex items-center justify-between w-full   ${
-              message.view === "table" ? "dark:text-gray-200 text-[#e6edf5]" : "text-gray-300"
+              message.view === "table"
+                ? "dark:text-gray-200 text-[#e6edf5]"
+                : "text-gray-300"
             }`}
           >
             <div className="flex gap-2 w-full">
@@ -278,7 +287,7 @@ function MainChat(props) {
                 className={`cursor-pointer ${
                   message.view === "pie" ? "text-blue-600" : ""
                 } hover:text-gray-500 ${
-                  (response.table || response.bar) && "hidden"
+                  (response.table || response.bar || response.line) && "hidden"
                 }`}
               />
               <FaChartBar
@@ -288,12 +297,21 @@ function MainChat(props) {
                   message.view === "bar" ? "text-blue-600" : ""
                 } hover:text-gray-500`}
               />
+              <FaChartLine
+                title="show line chart"
+                onClick={() => handleViewChange(message.id, "line")}
+                className={`cursor-pointer ${
+                  message.view === "line" ? "text-blue-600" : ""
+                } hover:text-gray-500`}
+              />
 
               <FaTable
                 title="show table"
                 onClick={() => handleViewChange(message.id, "table")}
                 className={`cursor-pointer ${
-                  message.view === "table" ? "dark:text-blue-200 text-blue-500" : ""
+                  message.view === "table"
+                    ? "dark:text-blue-200 text-blue-500"
+                    : ""
                 } hover:text-gray-500`}
               />
             </div>
@@ -335,6 +353,11 @@ function MainChat(props) {
             <BarChart
               response={chartData}
               isBar={response.bar || response.pie}
+            />
+          ) : message.view === "line" ? (
+            <LineChart
+              response={chartData}
+              isLine={response.bar || response.pie || response.line}
             />
           ) : (
             message.view === "table" && (
