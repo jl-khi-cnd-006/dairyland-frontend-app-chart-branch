@@ -14,7 +14,7 @@ const convertTableData = (table, view) => {
       // Handle parsed data (when view is false)
       if (data[0].length === columns.length && !isNaN(Number(data[0][0]))) {
         // Directly map numeric flat data without parsing
-        console.log('Flat numeric data, mapping without parsing');
+        // console.log('Flat numeric data, mapping without parsing');
         parsedData = [
           columns.reduce((acc, col, index) => {
             acc[col] = data[0][index];
@@ -26,7 +26,7 @@ const convertTableData = (table, view) => {
         parsedData = data[0].map((item) => {
           try {
             const parsedItem = JSON.parse(item.replace(/'/g, '"'));
-            console.log('Parsed Item:', parsedItem);
+            // console.log('Parsed Item:', parsedItem);
     
             if (Array.isArray(parsedItem)) {
               console.log('Data is an array after parsing');
@@ -35,10 +35,10 @@ const convertTableData = (table, view) => {
                 return acc;
               }, {});
             } else if (typeof parsedItem === 'object' && parsedItem !== null) {
-              console.log('Data is an object after parsing');
+              // console.log('Data is an object after parsing');
               return parsedItem;
             } else {
-              console.log('Data is flat after parsing', parsedItem);
+              // console.log('Data is flat after parsing', parsedItem);
               return columns.reduce((acc, col, index) => {
                 acc[col] = parsedItem[index];
                 return acc;
@@ -54,7 +54,7 @@ const convertTableData = (table, view) => {
      else {
       // Handle direct data (flat or nested)
       if (Array.isArray(data[0])) {
-        console.log('Data is nested array',);
+        // console.log('Data is nested array',);
         // If it's an array of arrays
         parsedData = data.map((row) =>
           columns.reduce((acc, col, index) => {
@@ -63,7 +63,7 @@ const convertTableData = (table, view) => {
           }, {})
         );
       } else if (data.length === columns.length) {
-        console.log('Flat data with matching columns length');
+        // console.log('Flat data with matching columns length');
         // Handle flat data directly
         parsedData = [
           columns.reduce((acc, col, index) => {
@@ -72,14 +72,14 @@ const convertTableData = (table, view) => {
           }, {}),
         ];
       } else {
-        console.warn('Unrecognized data structure:', data);
+        // console.warn('Unrecognized data structure:', data);
       }
     }
   } catch (error) {
-    console.log("Parsing error:", error);
+    // console.log("Parsing error:", error);
   }
 
-  console.log("Final Parsed Data:", parsedData);
+  // console.log("Final Parsed Data:", parsedData);
   return parsedData || [];
 };
 

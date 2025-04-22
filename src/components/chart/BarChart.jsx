@@ -98,23 +98,23 @@ const BarChart = ({ response, isBar }) => {
           const parsedItem = JSON.parse(item.replace(/'/g, '"'));
           return parsedItem.map(val => (val === null || val === "None" ? 0 : val));
         } catch (error) {
-          console.log("Parsing error:", error, "for item:", item);
+          // console.log("Parsing error:", error, "for item:", item);
           return item;
         }
       });
-      console.log("parsed in bar", parsedData);
+      // console.log("parsed in bar", parsedData);
     } else {
       parsedData = data;
     }
 
-    // console.log("parsedData ", parsedData);
+    console.log("parsedData ", parsedData);
 
     const isSimpleBar = parsedData.every(
       (item) => typeof item === "string" || typeof item === "number"
     );
 
     if (isSimpleBar) {
-      // console.log("in simple form");
+      console.log("in simple form");
       // **Case 1: Simple bar chart (one column, multiple rows)**
       categories = columns;
       seriesData = data.map(Number);
@@ -125,8 +125,9 @@ const BarChart = ({ response, isBar }) => {
         series: [{ name: "Sales", data: seriesData }],
         options: { ...prevState.options, xaxis: { categories } },
       }));
+      console.log('data in bar', seriesData)
     } else {
-      // console.log("in tabular form");
+      console.log("in tabular form");
       // **Case 2: Grouped bar chart (multiple rows, multiple columns)**
       const categories = parsedData.map((item) => item[0]);
       const months = columns.slice(1);

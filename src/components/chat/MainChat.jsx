@@ -31,8 +31,8 @@ function MainChat(props) {
   const [streamingMessageId, setStreamingMessageId] = useState(null);
   const [view, setView] = useState(null);
   const prevMessageCountRef = useRef(0);
-   const prevLastMessageIdRef = useRef(null);
-   const prevLastResponseRef = useRef(null);
+  const prevLastMessageIdRef = useRef(null);
+  const prevLastResponseRef = useRef(null);
 
   useEffect(() => {
     if (props?.freqPrompt) {
@@ -52,28 +52,28 @@ function MainChat(props) {
 
   useEffect(() => {
     const prevCount = prevMessageCountRef.current;
-     const currentCount = messageList.length;
-     const lastMessage = messageList[messageList.length - 1];
- 
-     const lastId = lastMessage?.id;
-     const lastResponse = lastMessage?.response;
- 
-     const shouldScroll =
-       // New message added
-       currentCount > prevCount ||
-       // Response updated (but same message id)
-       (lastId === prevLastMessageIdRef.current &&
-         lastResponse !== prevLastResponseRef.current);
- 
-     if (shouldScroll && chatEndRef.current) {
-       chatEndRef.current.scrollIntoView({ behavior: "smooth" });
-     }
- 
-     // Update refs
-     prevMessageCountRef.current = currentCount;
-     prevLastMessageIdRef.current = lastId;
-     prevLastResponseRef.current = lastResponse;
-   }, [messageList]);
+    const currentCount = messageList.length;
+    const lastMessage = messageList[messageList.length - 1];
+
+    const lastId = lastMessage?.id;
+    const lastResponse = lastMessage?.response;
+
+    const shouldScroll =
+      // New message added
+      currentCount > prevCount ||
+      // Response updated (but same message id)
+      (lastId === prevLastMessageIdRef.current &&
+        lastResponse !== prevLastResponseRef.current);
+
+    if (shouldScroll && chatEndRef.current) {
+      chatEndRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+
+    // Update refs
+    prevMessageCountRef.current = currentCount;
+    prevLastMessageIdRef.current = lastId;
+    prevLastResponseRef.current = lastResponse;
+  }, [messageList]);
 
   const clearChat = () => {
     setMessageList([]);
@@ -120,6 +120,8 @@ function MainChat(props) {
                 ? "pie"
                 : response.bar
                 ? "bar"
+                : response.line
+                ? "line"
                 : response.table
                 ? "table"
                 : "default",
@@ -152,7 +154,7 @@ function MainChat(props) {
       if (!response.ok) {
         throw new Error(data?.detail?.message || "Network response was not ok");
       }
-      // console.log("data", data);
+      console.log("data", data);
       return data;
     } catch (error) {
       toast.error(error.message || "Something went wrong", {
@@ -174,6 +176,8 @@ function MainChat(props) {
                 ? "pie"
                 : response?.bar
                 ? "bar"
+                : response?.line
+                ? "line"
                 : response?.table
                 ? "table"
                 : "default",
@@ -186,6 +190,8 @@ function MainChat(props) {
         ? "pie"
         : response?.bar
         ? "bar"
+        : response?.line
+        ? "line"
         : response?.table
         ? "table"
         : "default"
@@ -222,8 +228,9 @@ function MainChat(props) {
 
     let chartData;
 
-    if (response.pie || response.bar || response.table) {
-      chartData = response.pie || response.bar || response.table;
+    if (response.pie || response.bar || response.table || response.line) {
+      chartData =
+        response.pie || response.bar || response.table || response.line;
       // console.log(chartData)
     }
 
@@ -232,7 +239,7 @@ function MainChat(props) {
         <div
           className={`${
             message.view === "table" ? "" : "bg-white"
-          } text-black p-1 rounded-[10px] relative` }
+          } text-black p-1 rounded-[10px] relative`}
         >
           <div
             className={` flex gap-2 justify-start w-full   ${
@@ -245,7 +252,7 @@ function MainChat(props) {
               className={`cursor-pointer ${
                 message.view === "pie" ? "text-blue-600" : ""
               } hover:text-gray-500 ${
-                (response.table || response.bar) && "hidden"
+                (response.table || response.bar || response.line) && "hidden"
               }`}
             />
             <FaChartBar
@@ -253,6 +260,13 @@ function MainChat(props) {
               onClick={() => handleViewChange(message.id, "bar")}
               className={`cursor-pointer ${
                 message.view === "bar" ? "text-blue-600" : ""
+              } hover:text-gray-500`}
+            />
+            <FaChartLine
+              title="show line chart"
+              onClick={() => handleViewChange(message.id, "line")}
+              className={`cursor-pointer ${
+                message.view === "line" ? "text-blue-600" : ""
               } hover:text-gray-500`}
             />
 
@@ -272,9 +286,14 @@ function MainChat(props) {
             <div className="">
               <BarChart
                 response={chartData}
-                isBar={response.bar || response.pie}
+                isBar={response.bar || response.pie || response.line}
               />
             </div>
+          ) : message.view === "line" ? (
+            <LineChart
+              response={chartData}
+              isLine={response.bar || response.pie || response.line}
+            />
           ) : (
             message.view === "table" && (
               <TableChart data={chartData} view={response.table} />
