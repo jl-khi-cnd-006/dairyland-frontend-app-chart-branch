@@ -346,7 +346,6 @@ function MainChat(props) {
             </div> */}
           </div>
 
-          {/* Render the selected chart */}
           {message.view === "pie" ? (
             <PieChart data={chartData.data} labels={chartData.columns} />
           ) : message.view === "bar" ? (
