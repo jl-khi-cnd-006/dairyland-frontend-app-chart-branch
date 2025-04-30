@@ -2,17 +2,18 @@
 import Image from "next/image";
 import React, { useEffect, useRef, useState } from "react";
 import { FaBars } from "react-icons/fa6";
+import { useRouter } from "next/navigation";
 
 // const freqData = [
 //   // {
 //   //   id: 1,
 //   //   prompt: "List the top 10 customers by total revenue for the current year.",
 //   // },
-//   // {
-//   //   id: 2,
-//   //   prompt:
-//   //     "Show the top 5 product categories by profit margin for the past year.",
-//   // },
+//   // // {
+//   // //   id: 2,
+//   // //   prompt:
+//   // //     "Show the top 5 product categories by profit margin for the past year.",
+//   // // },
 //   // {
 //   //   id: 3,
 //   //   prompt: "Bar chart of the top 5 products by total units sold this year.",
@@ -24,7 +25,8 @@ import { FaBars } from "react-icons/fa6";
 //   // },
 //   // {
 //   //   id: 5,
-//   //   prompt: "Show bottom 5 product categories by total revenue this quarter.",
+//   //   prompt:
+//   //     "Show bottom 5 product categories by total revenue this quarter.",
 //   // },
 //   // {
 //   //   id: 6,
@@ -76,11 +78,12 @@ const freqData = [
 function SideBar({ handleFrqClick }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const sidebarRef = useRef(null);
+  const router = useRouter();
 
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (
-        // window.innerWidth <= 991 &&
+        window.innerWidth <= 991 &&
         sidebarRef.current &&
         !sidebarRef.current.contains(event.target)
       ) {
@@ -96,7 +99,7 @@ function SideBar({ handleFrqClick }) {
     window.addEventListener("resize", handleResize);
     document.addEventListener("mousedown", handleClickOutside);
 
-    // handleResize();
+    handleResize();
 
     return () => {
       window.removeEventListener("resize", handleResize);
@@ -137,9 +140,7 @@ function SideBar({ handleFrqClick }) {
           </h3>
           <div className="space-y-2 overflow-y-auto max-h-[70vh] py-1">
             {freqData?.length === 0 ? (
-              <div
-                className={`bg-gray-700 p-2 rounded-md `}
-              >
+              <div className={`bg-gray-700 p-2 rounded-md `}>
                 No Record found
               </div>
             ) : (

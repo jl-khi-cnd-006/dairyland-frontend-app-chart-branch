@@ -1,11 +1,8 @@
 import React, { useState } from "react";
-import dynamic from 'next/dynamic';
-
-const ReactApexChart = dynamic(() => import('react-apexcharts'), { ssr: false });
+import ReactApexChart from "react-apexcharts";
 
 const BarChart = ({ data, labels }) => {
-  const integerData = data.map((value) => value);
-  // console.log('data in bar chart',labels)
+  // Define state using useState
   const [chartState, setChartState] = useState({
     series: [
       {
@@ -22,25 +19,13 @@ const BarChart = ({ data, labels }) => {
         bar: {
           columnWidth: "50%",
           distributed: true,
-          borderRadius: 2,
-          borderRadiusApplication: "end",
         },
       },
       dataLabels: {
-        enabled: data.length > 6 ? false : true,
-        offsetY: 0,
-        style: {
-          colors: ["#000000"],
-          fontSize: "12px",
-          fontWeight: 600,
-          transform: "rotate(45deg)",
-          transformOrigin: "20% 40%",
-        },
-        formatter: (value) => value.toLocaleString(),
+        enabled: true,
       },
       legend: {
         show: true,
-        position: 'top'
       },
       xaxis: {
         categories: labels,
@@ -52,12 +37,12 @@ const BarChart = ({ data, labels }) => {
           },
         },
         title: {
-          // text: "Vendors",
+        //   text: "Vendors",
         },
       },
       yaxis: {
         title: {
-          // text: "Servings",
+        //   text: "Servings",
         },
       },
     },
@@ -69,7 +54,7 @@ const BarChart = ({ data, labels }) => {
         options={chartState.options}
         series={chartState.series}
         type="bar"
-        height={400}
+        height={500}
       />
     </div>
   );
